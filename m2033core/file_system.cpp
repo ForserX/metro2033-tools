@@ -30,12 +30,12 @@ using namespace m2033;
 
 static inline void fix_slashes( std::string &s )
 {
-	uint32_t i = 0;
-	size_t len = s.length();
-	while( len-- != 0 ) {
-		if( s[i] == '\\' )
+	auto len = s.length();
+	for(uint32_t i = 0; len != 0; i++)
+	{
+		len--;
+		if(s[i] == '\\')
 			s[i] = '/';
-		i++;
 	}
 }
 
