@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 #include "prerequisites.h"
 
+#include <tuple>
+
 namespace m2033
 {
 	class mesh
@@ -44,6 +46,8 @@ namespace m2033
 		typedef std::vector<vec3> normals;
 		typedef std::vector<vec2> texcoords;
 		typedef std::vector<short> indices;
+		typedef std::vector<std::tuple<char, char, char, char>> bones;
+		typedef std::vector<std::tuple<float, float, float, float>> weights;
 
 		mesh();
 		~mesh();
@@ -63,12 +67,16 @@ namespace m2033
 		normals get_normals() const;
 		texcoords get_tex_coords() const;
 		indices get_indices() const;
+		weights get_weights() const;
+		bones get_bones() const;
 
 	private:
 		vertices	vertices_;
 		normals		normals_;
 		texcoords	texcoords_;
 		indices		indices_;
+		bones		bones_;
+		weights		weights_;
 
 		std::string	texname_;
 		std::string	name_;
@@ -85,6 +93,8 @@ namespace m2033
 	inline mesh::normals mesh::get_normals() const { return normals_; }
 	inline mesh::texcoords mesh::get_tex_coords() const { return texcoords_; }
 	inline mesh::indices mesh::get_indices() const { return indices_; }
+	inline mesh::bones mesh::get_bones() const { return bones_; }
+	inline mesh::weights mesh::get_weights() const { return weights_; }
 }
 
 #endif // __M2033_MESH_H__

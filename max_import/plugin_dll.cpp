@@ -35,7 +35,7 @@ class model_import_class_desc : public ClassDesc
 public:
 	int				IsPublic() { return TRUE; }
 	void*			Create( BOOL loading ) { return new model_import; }
-	const TCHAR*	ClassName() { return "ModelImport"; }
+	const TCHAR*	ClassName() { return _T("ModelImport"); }
 	SClass_ID		SuperClassID() { return SCENE_IMPORT_CLASS_ID; }
 	Class_ID		ClassID() { return Class_ID(0xc9a5a4d, 0x40a2064b); }
 	const TCHAR*    Category() { return _T(""); }
@@ -46,7 +46,7 @@ class image_import_class_desc : public ClassDesc
 public:
 	int				IsPublic() { return TRUE; }
 	void*			Create( BOOL loading ) { return new image_import; }
-	const TCHAR*	ClassName() { return "ImageImport"; }
+	const TCHAR*	ClassName() { return _T("ImageImport"); }
 	SClass_ID		SuperClassID() { return BMM_IO_CLASS_ID; }
 	Class_ID		ClassID() { return Class_ID(0x52ae1ac0, 0x6d1845d8); }
 	const TCHAR    *InternalName ( ) { return _T("4a_image"); }
@@ -58,7 +58,7 @@ class level_import_class_desc : public ClassDesc
 public:
 	int				IsPublic() { return TRUE; }
 	void*			Create( BOOL loading ) { return new level_import; }
-	const TCHAR*	ClassName() { return "LevelImport"; }
+	const TCHAR*	ClassName() { return _T("LevelImport"); }
 	SClass_ID		SuperClassID() { return SCENE_IMPORT_CLASS_ID; }
 	Class_ID		ClassID() { return Class_ID(0x50346607, 0x31fc2c42); }
 	const TCHAR*    Category() { return _T(""); }
@@ -75,8 +75,8 @@ BOOL WINAPI DllMain( HINSTANCE hinst,ULONG reason, LPVOID reserved )
 
 __declspec( dllexport ) const TCHAR* LibDescription()
 {
-	return "Metro 2033 Import Plugin. Please visit "
-		"http://code.google.com/p/metro2033-tools/ for more information.";
+	return _T("Metro 2033 Import Plugin. Please visit ")
+		_T("http://code.google.com/p/metro2033-tools/ for more information.");
 }
 
 __declspec( dllexport ) int LibInitialize(void)

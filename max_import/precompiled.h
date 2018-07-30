@@ -54,4 +54,19 @@ THE SOFTWARE.
 #include <assert.h>
 #include <math.h>
 
+#include <codecvt>
+
+inline std::string ToNarrow(const std::wstring& wide)
+{
+	static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> g_converter;
+	return g_converter.to_bytes(wide);
+}
+
+inline std::wstring ToWide(const std::string& narrow)
+{
+	static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> g_converter;
+	return g_converter.from_bytes(narrow);
+}
+
+
 #endif // __3DSMAX_PRECOMPILED_H__

@@ -31,7 +31,7 @@ using namespace m2033_3dsmax;
 
 void image_import::ShowAbout( HWND hwnd )
 {
-	MessageBox( hwnd,
+	MessageBoxA( hwnd,
 				"Metro 2033 Image import plugin.\n"
 				"Please visit http://code.google.com/p/metro2033-tools/ for more information.\n"
 				"Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>\n",
@@ -53,7 +53,7 @@ BitmapStorage* image_import::Load( BitmapInfo *bi, Bitmap *map, BMMRES *status )
 
 	GetImageInfo( bi );
 	fname = bi->Name();
-	file = fopen( fname, "rb" );
+	file = _wfopen( fname, L"rb" );
 	if( file == 0 )
 	{
 		*status = BMMRES_FILENOTFOUND;
@@ -152,7 +152,7 @@ BMMRES image_import::GetImageInfo( BitmapInfo *bi )
 	std::string ext;
 	size_t off, count;
 
-	ext = bi->Name();
+	ext = ToNarrow(bi->Name());
 	off = ext.rfind( "." ) + 1;
 	count = ext.length() - off;
 	ext = ext.substr( off, count );

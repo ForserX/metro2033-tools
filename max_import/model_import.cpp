@@ -43,8 +43,8 @@ int model_import::DoImport( const TCHAR *name, ImpInterface *ii, Interface *ifac
 	bool res = 0;
 	m2033::file_system fs;
 
-	fs.set_root_from_fname( name );
-	res = model.load( name );
+	fs.set_root_from_fname( ToNarrow(name) );
+	res = model.load(ToNarrow(name) );
 	if( !res )
 		return IMPEXP_FAIL;
 
@@ -55,6 +55,27 @@ int model_import::import( m2033::model &m )
 {
 	Interface *iface = GetCOREInterface();
 
+	if (m.get_type() == m2033::model::DYNAMIC)
+	{
+		std::set<int> boneInts;
+
+		for (unsigned i = 0; i < m.get_num_meshes(); i++)
+		{
+			m2033::mesh_ptr p = m.get_mesh(i);
+
+			for (auto& bone : p->get_bones())
+			{
+				bone_ints_.insert(std::get<0>(bone));
+				bone_ints_.insert(std::get<1>(bone));
+				bone_ints_.insert(std::get<2>(bone));
+				bone_ints_.insert(std::get<3>(bone));
+			}
+		}
+
+		m2033::skeleton_ptr p = m.get_skeleton();
+		build_skeleton(p);
+	}
+
 	for( unsigned i = 0; i < m.get_num_meshes(); i++ )
 	{
 		TriObject *object = CreateNewTriObject();
@@ -64,15 +85,49 @@ int model_import::import( m2033::model &m )
 		set_mesh( mesh, p );
 
 		INode *node = iface->CreateObjectNode( object );
-		node->SetName( (char*)p->get_name().c_str() );
+		node->SetName( (wchar_t*)ToWide(p->get_name()).c_str() );
+
+		// skin?
+		auto weights = p->get_weights();
+		auto bones = p->get_bones();
+
+		if (bones.size())
+		{
+			Modifier *skin = (Modifier*)iface->CreateInstance(SClass_ID(OSM_CLASS_ID), SKIN_CLASSID);
+			ISkinImportData *skinImp = (ISkinImportData*)skin->GetInterface(I_SKINIMPORTDATA);
+			GetCOREInterface7()->AddModifier(*node, *skin);
+
+			Tab<::INode*> bt;
+			Tab<float> wt;
+			bt.SetCount(4, 1);
+			wt.SetCount(4, 1);
+
+			for (auto& b : bones_idx_)
+			{
+				skinImp->AddBoneEx(b.second, true);
+			}
+
+			node->EvalWorldState(iface->GetTime());
+
+			for (unsigned j = 0; j < bones.size(); j++)
+			{
+				bt[0] = bones_idx_[std::get<0>(bones[j])];
+				wt[0] = std::get<0>(weights[j]);
+
+				bt[1] = bones_idx_[std::get<1>(bones[j])];
+				wt[1] = std::get<1>(weights[j]);
+
+				bt[2] = bones_idx_[std::get<2>(bones[j])];
+				wt[2] = std::get<2>(weights[j]);
+
+				bt[3] = bones_idx_[std::get<3>(bones[j])];
+				wt[3] = std::get<3>(weights[j]);
+
+				skinImp->AddWeights(node, j, bt, wt);
+			}
+		}
 
 		create_material( node, p->get_texture_name() );
-	}
-
-	if( m.get_type() == m2033::model::DYNAMIC )
-	{
-		m2033::skeleton_ptr p = m.get_skeleton();
-		build_skeleton( p );
 	}
 
 	iface->ForceCompleteRedraw();
@@ -108,7 +163,7 @@ void model_import::set_mesh( Mesh &m1, m2033::mesh_ptr m2 )
 
 void model_import::ShowAbout( HWND hwnd )
 {
-	MessageBox( hwnd,
+	MessageBoxA( hwnd,
 				"Metro 2033 Model import plugin.\n"
 				"Please visit http://code.google.com/p/metro2033-tools/ for more information.\n"
 				"Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>\n",
@@ -169,10 +224,37 @@ void model_import::build_skeleton( m2033::skeleton_ptr s )
 	Point3 color;
 	Interface* iface;
 
-	if( s.is_null() )
-		return;
-
 	iface = GetCOREInterface();
+
+	if (s.is_null())
+	{
+		for (unsigned i = 0; i < 256; i++)
+		{
+			if (bone_ints_.find(i) == bone_ints_.end())
+			{
+				continue;
+			}
+
+			m.IdentityMatrix();
+			q.Identity();
+
+			color = GetUIColor(COLOR_BONES);
+
+			obj = (Object*)iface->CreateInstance(GEOMOBJECT_CLASS_ID, BONE_OBJ_CLASSID);
+
+			node = iface->CreateObjectNode(obj);
+			node->SetWireColor(RGB(int(color.x*255.0f), int(color.y*255.0f), int(color.z*255.0f)));
+			node->SetName((wchar_t*)ToWide("bone " + std::to_string(i)).c_str());
+			node->SetNodeTM(0, m);
+			node->SetBoneNodeOnOff(TRUE, 0);
+			node->SetRenderable(FALSE);
+			node->ShowBone(2);
+			node->SetWireColor(0xFF00FFFF);
+
+			bones_idx_[i] = node;
+		}
+		return;
+	}
 
 	for( unsigned i = 0; i < s->get_num_bones(); i++ )
 	{
@@ -187,12 +269,13 @@ void model_import::build_skeleton( m2033::skeleton_ptr s )
 
 		node = iface->CreateObjectNode( obj );
 		node->SetWireColor(RGB(int(color.x*255.0f), int(color.y*255.0f), int(color.z*255.0f) ));
-		node->SetName( (char*) s->get_bone( i ).name.c_str() );
+		node->SetName( (wchar_t*) ToWide(s->get_bone( i ).name).c_str() );
 		node->SetNodeTM( 0, m );
 		node->SetBoneNodeOnOff( TRUE, 0 );
 		node->SetRenderable( FALSE );
 
 		bones_[s->get_bone( i ).name] = node;
+		bones_idx_[i] = node;
 	}
 
 	for( unsigned i = 0; i < s->get_num_bones(); i++ )
@@ -333,10 +416,10 @@ void model_import::create_material( INode *node, const std::string& texture )
 	tex = NewDefaultBitmapTex();
 
 	tex->SetMapName( (TCHAR*)texture.c_str() );
-	tex->SetName( name.c_str() );
+	tex->SetName( ToWide(name).c_str() );
 	tex->SetAlphaAsMono( true );
 
-	mat->SetName( name.c_str() );
+	mat->SetName(ToWide(name).c_str() );
 	mat->SetSubTexmap( ID_DI, tex );
 	mat->SetSubTexmap( ID_OP, tex );
 	mat->EnableMap( ID_OP, FALSE );

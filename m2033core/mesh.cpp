@@ -46,7 +46,7 @@ struct dynamic_model_vertex
     unsigned tangent;
     unsigned binormal;
     char  bones[4];
-    char  weights[4];
+    unsigned char weights[4];
     short u, v;
 };
 
@@ -105,6 +105,9 @@ void mesh::init( uint32_t type, void *vertices, uint32_t num_vertices, void *ind
 
 			vec2 tc = vec2( v[i].u / 2048.0f, v[i].v / 2048.0f );
 			texcoords_.push_back( tc );
+
+			bones_.emplace_back( v[i].bones[0], v[i].bones[1], v[i].bones[2], v[i].bones[3] );
+			weights_.emplace_back( v[i].weights[0] / 255.0f, v[i].weights[1] / 255.0f, v[i].weights[2] / 255.0f, v[i].weights[3] / 255.0f );
 		}
 	}
 	else if( type == mesh::LEVEL_GEOM ) {
@@ -138,6 +141,8 @@ void mesh::clear()
 	texcoords_.clear();
 	indices_.clear();
 	texname_.clear();
+	bones_.clear();
+	weights_.clear();
 	name_.clear();
 }
 

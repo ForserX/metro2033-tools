@@ -35,14 +35,14 @@ public:
 	~image_import() {}
 
 	int				ExtCount() { return 3; }
-	const TCHAR*	LongDesc() { return "Metro2033 texture image file"; }
-	const TCHAR*	ShortDesc() { return "Metro2033 texture image file"; }
-	const TCHAR*	AuthorName() { return "Ivan Shishkin"; }
-	const TCHAR*	CopyrightMessage() { return "Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>"; }
+	const TCHAR*	LongDesc() { return _T("Metro2033 texture image file"); }
+	const TCHAR*	ShortDesc() { return _T("Metro2033 texture image file"); }
+	const TCHAR*	AuthorName() { return _T("Ivan Shishkin"); }
+	const TCHAR*	CopyrightMessage() { return _T("Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>"); }
 	unsigned int	Version() { return 100; }
 	int				Capability() { return BMMIO_READER | BMMIO_EXTENSION | BMMIO_CONTROLWRITE; }
 	void			ShowAbout( HWND hWnd );
-	BOOL			LoadConfigure( void *ptr ) { return TRUE; }
+	BOOL			LoadConfigure( void *ptr, DWORD ) { return TRUE; }
 	BOOL			SaveConfigure( void *ptr ) { return TRUE; }
 	DWORD			EvaluateConfigure() { return 0; }
 	BMMRES			GetImageInfo( BitmapInfo *bi );
@@ -53,11 +53,11 @@ public:
 		switch( n )
 		{
 		case 0:
-			return "512";
+			return _T("512");
 		case 1:
-			return "1024";
+			return _T("1024");
 		case 2:
-			return "2048";
+			return _T("2048");
 		default:
 			assert(0);
 			return 0;

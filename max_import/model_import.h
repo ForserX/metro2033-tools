@@ -26,19 +26,21 @@ THE SOFTWARE.
 #ifndef __3DSMAX_MODEL_IMPORT_H__
 #define __3DSMAX_MODEL_IMPORT_H__
 
+#include <set>
+
 namespace m2033_3dsmax
 {
 class model_import : public SceneImport
 {
 public:
 	int				ExtCount() { return 3; }
-	const TCHAR* Ext( int i ) { return i ? "mesh" : "model"; }
-	const TCHAR*	LongDesc() { return "Metro2033 Model Importer"; }
-	const TCHAR*	ShortDesc() { return "Metro2033 Model Importer"; }
-	const TCHAR*	AuthorName() { return "Ivan Shishkin"; }
-	const TCHAR*	CopyrightMessage() { return "Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>"; }
-	const TCHAR*	OtherMessage1() { return ""; }
-	const TCHAR*	OtherMessage2() { return ""; }
+	const TCHAR* Ext( int i ) { return i ? _T("mesh") : _T("model"); }
+	const TCHAR*	LongDesc() { return _T("Metro2033 Model Importer"); }
+	const TCHAR*	ShortDesc() { return _T("Metro2033 Model Importer"); }
+	const TCHAR*	AuthorName() { return _T("Ivan Shishkin"); }
+	const TCHAR*	CopyrightMessage() { return _T("Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>"); }
+	const TCHAR*	OtherMessage1() { return _T(""); }
+	const TCHAR*	OtherMessage2() { return _T(""); }
 	unsigned int	Version() { return 100; }
 	int				ZoomExtents() { return ZOOMEXT_NOT_IMPLEMENTED; }
 	void			DeleteThis() { delete this; }
@@ -51,6 +53,7 @@ public:
 private:
 	typedef std::map<std::string, Mtl*> mtl_map;
 	typedef std::map<std::string, INode*> bone_map;
+	typedef std::map<int, INode*> bone_idx_map;
 
 private:
 	Modifier* create_skin_modifier( INode* node );
@@ -67,6 +70,9 @@ private:
 
 	mtl_map			materials_;
 	bone_map		bones_;
+	bone_idx_map	bones_idx_;
+
+	std::set<int>   bone_ints_;
 };
 }
 

@@ -32,10 +32,10 @@ using namespace m2033_3dsmax;
 int level_import::DoImport( const TCHAR *name, ImpInterface *ii, Interface *i, BOOL suppressPrompts )
 {
 	m2033::file_system fs;
-	fs.set_root_from_fname( name );
+	fs.set_root_from_fname( ToNarrow(name) );
 
 	m2033::level lvl;
-	bool res = lvl.load( name );
+	bool res = lvl.load( ToNarrow(name) );
 	if( !res )
 		return IMPEXP_FAIL;
 
@@ -47,9 +47,9 @@ int level_import::DoImport( const TCHAR *name, ImpInterface *ii, Interface *i, B
 void level_import::ShowAbout( HWND hwnd )
 {
 	MessageBox( hwnd,
-				"Metro 2033 Level import plugin.\n"
-				"Please visit http://code.google.com/p/metro2033-tools/ for more information.\n"
-				"Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>\n",
-				"About",
+				_T("Metro 2033 Level import plugin.\n")
+				_T("Please visit http://code.google.com/p/metro2033-tools/ for more information.\n")
+				_T("Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>\n"),
+				_T("About"),
 				MB_ICONINFORMATION );
 }

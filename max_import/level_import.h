@@ -32,13 +32,13 @@ namespace m2033_3dsmax
 	{
 	public:
 		int				ExtCount() { return 1; }
-		const TCHAR* Ext( int i ) { return "geom_pc"; }
-		const TCHAR*	LongDesc() { return "Metro2033 Level Importer"; }
-		const TCHAR*	ShortDesc() { return "Metro2033 Level Importer"; }
-		const TCHAR*	AuthorName() { return "Ivan Shishkin"; }
-		const TCHAR*	CopyrightMessage() { return "Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>"; }
-		const TCHAR*	OtherMessage1() { return ""; }
-		const TCHAR*	OtherMessage2() { return ""; }
+		const TCHAR* Ext( int i ) { return _T("geom_pc"); }
+		const TCHAR*	LongDesc() { return _T("Metro2033 Level Importer"); }
+		const TCHAR*	ShortDesc() { return _T("Metro2033 Level Importer"); }
+		const TCHAR*	AuthorName() { return _T("Ivan Shishkin"); }
+		const TCHAR*	CopyrightMessage() { return _T("Copyright (C) 2010 Ivan Shishkin <codingdude@gmail.com>"); }
+		const TCHAR*	OtherMessage1() { return _T(""); }
+		const TCHAR*	OtherMessage2() { return _T(""); }
 		unsigned int	Version() { return 100; }
 		int				ZoomExtents() { return ZOOMEXT_NOT_IMPLEMENTED; }
 		void			DeleteThis() { delete this; }
