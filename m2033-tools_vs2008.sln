@@ -1,26 +1,22 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m2033core", "m2033core\m2033core_vs2008.vcproj", "{AB983738-94F1-4975-9ABC-6D4A3137E170}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m2033core", "m2033core\m2033core_vs2008.vcxproj", "{AB983738-94F1-4975-9ABC-6D4A3137E170}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "max_import", "max_import\max_import_vs2008.vcproj", "{6D454517-99DB-453B-8949-DFF679AE7B91}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AB983738-94F1-4975-9ABC-6D4A3137E170} = {AB983738-94F1-4975-9ABC-6D4A3137E170}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "max_import", "max_import\max_import_vs2008.vcxproj", "{6D454517-99DB-453B-8949-DFF679AE7B91}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "magicdds", "magicdds\magicdds_vs2008.vcproj", "{4CF0E608-F7B9-4AE7-8B74-3B0028E2A684}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "magicdds", "magicdds\magicdds_vs2008.vcxproj", "{4CF0E608-F7B9-4AE7-8B74-3B0028E2A684}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpackerGUI", "unpacker_gui\UnpackerGUI.csproj", "{EAA8A8AF-0810-453C-8156-83BDE70D026E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{027F75E7-CA48-4A7C-B381-0B7E3D5E3BAC} = {027F75E7-CA48-4A7C-B381-0B7E3D5E3BAC}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unpacker", "unpacker\m2033unp_vs2008.vcproj", "{027F75E7-CA48-4A7C-B381-0B7E3D5E3BAC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unpacker", "unpacker\m2033unp_vs2008.vcxproj", "{027F75E7-CA48-4A7C-B381-0B7E3D5E3BAC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "maya_import", "maya_import\maya_import_vs2008.vcproj", "{18755926-789E-4A1C-B753-5A42CA825FDB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AB983738-94F1-4975-9ABC-6D4A3137E170} = {AB983738-94F1-4975-9ABC-6D4A3137E170}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "maya_import", "maya_import\maya_import_vs2008.vcxproj", "{18755926-789E-4A1C-B753-5A42CA825FDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -661,5 +657,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {149BC538-EDE9-4383-8019-556D1805B0B6}
 	EndGlobalSection
 EndGlobal
